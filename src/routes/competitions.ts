@@ -1,7 +1,10 @@
+// external
 import { Router, Request, Response } from "express";
-import { Competition } from "../models";
 import { upload } from "../middleware/upload";
 import { uploadImage, deleteImage } from "../utils/cloudinary";
+
+// internal
+import { Competition } from "../models";
 import { HttpError } from "../middleware/errorHandler";
 
 const router = Router();
@@ -15,9 +18,9 @@ const DEFAULT_COMPETITIONS = [
   { name: "Friendly", color: "#555558", sortOrder: 6 },
 ];
 
-// ─── GET /competitions ────────────────────────────────────────────────────────
+// GET /competitions
 router.get("/", async (_req: Request, res: Response) => {
-  // Seed defaults on first call if none exist
+  // seed defaults on first call if none exist
   const count = await Competition.count();
   if (count === 0) {
     await Competition.bulkCreate(

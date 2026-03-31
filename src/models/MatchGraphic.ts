@@ -1,15 +1,15 @@
-import { DataTypes, Model, Optional } from 'sequelize';
-import sequelize from '../config/sequelize';
+import { DataTypes, Model, Optional } from "sequelize";
+import sequelize from "../config/sequelize";
 
-export type GraphicType = 'fulltime' | 'matchday';
-export type GraphicStatus = 'draft' | 'published';
+export type GraphicType = "fulltime" | "matchday";
+export type GraphicStatus = "draft" | "published";
 
 export interface MatchEvent {
   id: string;
-  type: 'goal' | 'penalty' | 'red' | 'og';
+  type: "goal" | "penalty" | "red" | "og";
   player: string;
   minute: string;
-  side: 'home' | 'away';
+  side: "home" | "away";
 }
 
 export interface MatchGraphicAttributes {
@@ -33,12 +33,12 @@ export interface MatchGraphicAttributes {
   awayTeamName: string | null;
   awayTeamLogoUrl: string | null;
 
-  // Full-time fields
+  // full-time fields
   homeScore: number | null;
   awayScore: number | null;
   events: MatchEvent[];
 
-  // Match day fields
+  // match day fields
   matchDate: string | null;
   kickoffTime: string | null;
   venue: string | null;
@@ -47,34 +47,34 @@ export interface MatchGraphicAttributes {
   updatedAt?: Date;
 }
 
-export interface MatchGraphicCreationAttributes
-  extends Optional<
-    MatchGraphicAttributes,
-    | 'id'
-    | 'status'
-    | 'bgImageUrl'
-    | 'bgImagePublicId'
-    | 'competitionId'
-    | 'competitionName'
-    | 'competitionIconUrl'
-    | 'competitionColor'
-    | 'homeTeamId'
-    | 'homeTeamName'
-    | 'homeTeamLogoUrl'
-    | 'awayTeamId'
-    | 'awayTeamName'
-    | 'awayTeamLogoUrl'
-    | 'homeScore'
-    | 'awayScore'
-    | 'events'
-    | 'matchDate'
-    | 'kickoffTime'
-    | 'venue'
-  > {}
+export interface MatchGraphicCreationAttributes extends Optional<
+  MatchGraphicAttributes,
+  | "id"
+  | "status"
+  | "bgImageUrl"
+  | "bgImagePublicId"
+  | "competitionId"
+  | "competitionName"
+  | "competitionIconUrl"
+  | "competitionColor"
+  | "homeTeamId"
+  | "homeTeamName"
+  | "homeTeamLogoUrl"
+  | "awayTeamId"
+  | "awayTeamName"
+  | "awayTeamLogoUrl"
+  | "homeScore"
+  | "awayScore"
+  | "events"
+  | "matchDate"
+  | "kickoffTime"
+  | "venue"
+> {}
 
 class MatchGraphic
   extends Model<MatchGraphicAttributes, MatchGraphicCreationAttributes>
-  implements MatchGraphicAttributes {
+  implements MatchGraphicAttributes
+{
   declare id: string;
   declare graphicType: GraphicType;
   declare status: GraphicStatus;
@@ -116,13 +116,13 @@ MatchGraphic.init(
       allowNull: false,
     },
     graphicType: {
-      type: DataTypes.ENUM('fulltime', 'matchday'),
+      type: DataTypes.ENUM("fulltime", "matchday"),
       allowNull: false,
     },
     status: {
-      type: DataTypes.ENUM('draft', 'published'),
+      type: DataTypes.ENUM("draft", "published"),
       allowNull: false,
-      defaultValue: 'draft',
+      defaultValue: "draft",
     },
     bgImageUrl: {
       type: DataTypes.STRING,
@@ -200,8 +200,8 @@ MatchGraphic.init(
   },
   {
     sequelize,
-    tableName: 'MatchGraphics',
-    modelName: 'MatchGraphic',
+    tableName: "MatchGraphics",
+    modelName: "MatchGraphic",
   },
 );
 

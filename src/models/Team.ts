@@ -1,5 +1,5 @@
-import { DataTypes, Model, Optional } from 'sequelize';
-import sequelize from '../config/sequelize';
+import { DataTypes, Model, Optional } from "sequelize";
+import sequelize from "../config/sequelize";
 
 export interface TeamAttributes {
   id: string;
@@ -10,11 +10,15 @@ export interface TeamAttributes {
   updatedAt?: Date;
 }
 
-export interface TeamCreationAttributes
-  extends Optional<TeamAttributes, 'id' | 'logoUrl' | 'logoPublicId'> {}
+export interface TeamCreationAttributes extends Optional<
+  TeamAttributes,
+  "id" | "logoUrl" | "logoPublicId"
+> {}
 
-class Team extends Model<TeamAttributes, TeamCreationAttributes>
-  implements TeamAttributes {
+class Team
+  extends Model<TeamAttributes, TeamCreationAttributes>
+  implements TeamAttributes
+{
   declare id: string;
   declare name: string;
   declare logoUrl: string | null;
@@ -46,8 +50,8 @@ Team.init(
   },
   {
     sequelize,
-    tableName: 'Teams',
-    modelName: 'Team',
+    tableName: "Teams",
+    modelName: "Team",
   },
 );
 
