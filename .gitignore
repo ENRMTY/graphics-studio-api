@@ -1,0 +1,24 @@
+dist/
+.env
+*.log
+
+# Dependencies
+/node_modules
+.pnp
+.pnp.js
+
+# Testing
+/coverage
+
+# Production
+/build
+
+# Misc
+.DS_Store
+.env
+.npmrc
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+# Diagnostic reports (https://nodejs.org)
+.report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
