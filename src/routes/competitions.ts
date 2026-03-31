@@ -37,10 +37,12 @@ router.get("/", async (_req: Request, res: Response) => {
   res.json({ success: true, data: competitions });
 });
 
-// ─── POST /competitions ───────────────────────────────────────────────────────
+// POST /competitions
 router.post("/", upload.single("icon"), async (req: Request, res: Response) => {
   const { name, color } = req.body as { name?: string; color?: string };
-  if (!name?.trim()) throw new HttpError(400, "name is required");
+  if (!name?.trim()) {
+    throw new HttpError(400, "name is required");
+  }
 
   let iconUrl: string | null = null;
   let iconPublicId: string | null = null;
@@ -63,20 +65,28 @@ router.post("/", upload.single("icon"), async (req: Request, res: Response) => {
   res.status(201).json({ success: true, data: competition });
 });
 
-// ─── PATCH /competitions/:id ──────────────────────────────────────────────────
+// PATCH /competitions/:id
 router.patch(
   "/:id",
   upload.single("icon"),
   async (req: Request, res: Response) => {
     const competition = await Competition.findByPk(req.params.id);
-    if (!competition) throw new HttpError(404, "Competition not found");
+    if (!competition) {
+      throw new HttpError(404, "Competition not found");
+    }
 
     const { name, color } = req.body as { name?: string; color?: string };
-    if (name?.trim()) competition.name = name.trim();
-    if (color?.trim()) competition.color = color.trim();
+    if (name?.trim()) {
+      competition.name = name.trim();
+    }
+    if (color?.trim()) {
+      competition.color = color.trim();
+    }
 
     if (req.file) {
-      if (competition.iconPublicId) await deleteImage(competition.iconPublicId);
+      if (competition.iconPublicId) {
+        await deleteImage(competition.iconPublicId);
+      }
       const result = await uploadImage(
         req.file.buffer,
         "lfc-studio/competitions",
@@ -90,14 +100,18 @@ router.patch(
   },
 );
 
-// ─── DELETE /competitions/:id ─────────────────────────────────────────────────
+// DELETE /competitions/:id
 router.delete("/:id", async (req: Request, res: Response) => {
   const competition = await Competition.findByPk(req.params.id);
-  if (!competition) throw new HttpError(404, "Competition not found");
-  if (competition.isDefault)
+  if (!competition) {
+    throw new HttpError(404, "Competition not found");
+  }
+  if (competition.isDefault) {
     throw new HttpError(403, "Cannot delete a default competition");
-
-  if (competition.iconPublicId) await deleteImage(competition.iconPublicId);
+  }
+  if (competition.iconPublicId) {
+    await deleteImage(competition.iconPublicId);
+  }
   await competition.destroy();
 
   res.json({ success: true, message: "Competition deleted" });
