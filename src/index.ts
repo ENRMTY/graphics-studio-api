@@ -8,7 +8,7 @@ import dotenv from "dotenv";
 import sequelize from "./config/sequelize";
 import teamsRouter from "./routes/teams";
 import competitionsRouter from "./routes/competition.route";
-import graphicsRouter from "./routes/graphics";
+import graphicsRouter from "./routes/graphics.route";
 import { errorHandler, notFound } from "./middleware/errorHandler";
 
 dotenv.config();
