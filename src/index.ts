@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 
 // internal
 import sequelize from "./config/sequelize";
-import teamsRouter from "./routes/teams";
+import teamsRouter from "./routes/team.route";
 import competitionsRouter from "./routes/competition.route";
 import graphicsRouter from "./routes/graphics.route";
 import { errorHandler, notFound } from "./middleware/errorHandler";
