@@ -1,4 +1,4 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
 import { upload } from "../middleware/upload";
 import {
   createGraphic,
