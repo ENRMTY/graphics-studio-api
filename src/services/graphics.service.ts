@@ -161,13 +161,15 @@ export const graphicsService = {
   },
 
   async getLatestDrafts() {
-    const [fulltime, matchday] = await Promise.all([
+    const [fulltime, halftime, matchday] = await Promise.all([
       graphicsRepository.findLatestDraftByType("fulltime"),
+      graphicsRepository.findLatestDraftByType("halftime"),
       graphicsRepository.findLatestDraftByType("matchday"),
     ]);
 
     return {
       fulltime,
+      halftime,
       matchday,
     };
   },
