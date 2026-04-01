@@ -19,17 +19,6 @@ type UpdateCompetitionInput = {
 
 export const competitionService = {
   async getCompetitions() {
-    const count = await competitionRepository.count();
-
-    if (count === 0) {
-      await competitionRepository.bulkCreate(
-        DEFAULT_COMPETITIONS.map((c) => ({
-          ...c,
-          isDefault: true,
-        })),
-      );
-    }
-
     return competitionRepository.findAll();
   },
 
@@ -93,10 +82,6 @@ export const competitionService = {
 
     if (!competition) {
       throw new HttpError(404, "Competition not found");
-    }
-
-    if (competition.isDefault) {
-      throw new HttpError(403, "Cannot delete a default competition");
     }
 
     if (competition.iconPublicId) {
