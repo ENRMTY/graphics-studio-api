@@ -1,7 +1,7 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import sequelize from "../config/sequelize";
 
-export type GraphicType = "fulltime" | "matchday";
+export type GraphicType = "fulltime" | "halftime" | "matchday";
 export type GraphicStatus = "draft" | "published";
 
 export interface MatchEvent {
@@ -116,7 +116,7 @@ MatchGraphic.init(
       allowNull: false,
     },
     graphicType: {
-      type: DataTypes.ENUM("fulltime", "matchday"),
+      type: DataTypes.ENUM("fulltime", "halftime", "matchday"),
       allowNull: false,
     },
     status: {
