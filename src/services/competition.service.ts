@@ -1,5 +1,4 @@
 import { competitionRepository } from "../repositories/competition.repository";
-import { DEFAULT_COMPETITIONS } from "../constants/competitions";
 import { HttpError } from "../middleware/errorHandler";
 import { uploadImage, deleteImage } from "../utils/cloudinary";
 
