@@ -71,8 +71,8 @@ export const graphicsService = {
       throw new HttpError(400, "graphicType is required");
     }
 
-    if (!["fulltime", "matchday"].includes(body.graphicType)) {
-      throw new HttpError(400, "graphicType must be fulltime or matchday");
+    if (!["fulltime", "matchday", "halftime"].includes(body.graphicType)) {
+      throw new HttpError(400, "graphicType must be fulltime, matchday, or halftime");
     }
 
     return graphicsRepository.create({
