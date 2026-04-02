@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Competitions', {
+    await queryInterface.createTable("Competitions", {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -23,12 +23,12 @@ module.exports = {
         allowNull: true,
       },
       color: {
-        type: Sequelize.STRING(7),   // hex e.g. #C8102E
+        type: Sequelize.STRING(7), // hex e.g. #C8102E
         allowNull: false,
-        defaultValue: '#C8102E',
+        defaultValue: "#C8102E",
       },
       isDefault: {
-        // marks the pre-seeded competitions so we don't delete them accidentally
+        // marks the pre-seeded competitions
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false,
@@ -50,6 +50,6 @@ module.exports = {
   },
 
   async down(queryInterface) {
-    await queryInterface.dropTable('Competitions');
+    await queryInterface.dropTable("Competitions");
   },
 };

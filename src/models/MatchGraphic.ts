@@ -190,7 +190,7 @@ MatchGraphic.init(
       allowNull: true,
     },
     kickoffTime: {
-      type: DataTypes.STRING(5),
+      type: DataTypes.STRING(25),
       allowNull: true,
     },
     venue: {

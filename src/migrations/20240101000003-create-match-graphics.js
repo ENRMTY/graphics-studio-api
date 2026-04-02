@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('MatchGraphics', {
+    await queryInterface.createTable("MatchGraphics", {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -12,14 +12,14 @@ module.exports = {
       },
       graphicType: {
         // 'fulltime' | 'matchday'
-        type: Sequelize.ENUM('fulltime', 'matchday'),
+        type: Sequelize.ENUM("fulltime", "matchday"),
         allowNull: false,
       },
       status: {
         // 'draft' | 'published'
-        type: Sequelize.ENUM('draft', 'published'),
+        type: Sequelize.ENUM("draft", "published"),
         allowNull: false,
-        defaultValue: 'draft',
+        defaultValue: "draft",
       },
 
       // Background image
@@ -36,9 +36,9 @@ module.exports = {
       competitionId: {
         type: Sequelize.UUID,
         allowNull: true,
-        references: { model: 'Competitions', key: 'id' },
-        onDelete: 'SET NULL',
-        onUpdate: 'CASCADE',
+        references: { model: "Competitions", key: "id" },
+        onDelete: "SET NULL",
+        onUpdate: "CASCADE",
       },
       competitionName: {
         type: Sequelize.STRING,
@@ -53,13 +53,13 @@ module.exports = {
         allowNull: true,
       },
 
-      // Teams (FK + snapshot of name/logo at time of creation)
+      // teams (FK + snapshot of name/logo at time of creation)
       homeTeamId: {
         type: Sequelize.UUID,
         allowNull: true,
-        references: { model: 'Teams', key: 'id' },
-        onDelete: 'SET NULL',
-        onUpdate: 'CASCADE',
+        references: { model: "Teams", key: "id" },
+        onDelete: "SET NULL",
+        onUpdate: "CASCADE",
       },
       homeTeamName: {
         type: Sequelize.STRING,
@@ -73,9 +73,9 @@ module.exports = {
       awayTeamId: {
         type: Sequelize.UUID,
         allowNull: true,
-        references: { model: 'Teams', key: 'id' },
-        onDelete: 'SET NULL',
-        onUpdate: 'CASCADE',
+        references: { model: "Teams", key: "id" },
+        onDelete: "SET NULL",
+        onUpdate: "CASCADE",
       },
       awayTeamName: {
         type: Sequelize.STRING,
@@ -86,7 +86,7 @@ module.exports = {
         allowNull: true,
       },
 
-      // Full-time specific
+      // full-time specific
       homeScore: {
         type: Sequelize.INTEGER,
         allowNull: true,
@@ -102,13 +102,13 @@ module.exports = {
         defaultValue: [],
       },
 
-      // Match day specific
+      // match day specific
       matchDate: {
         type: Sequelize.DATEONLY,
         allowNull: true,
       },
       kickoffTime: {
-        type: Sequelize.STRING(5),   // e.g. "17:30"
+        type: Sequelize.STRING(5), // e.g. "17:30"
         allowNull: true,
       },
       venue: {
@@ -126,11 +126,15 @@ module.exports = {
       },
     });
 
-    // Index for listing graphics by type + status efficiently
-    await queryInterface.addIndex('MatchGraphics', ['graphicType', 'status', 'createdAt']);
+    // index for listing graphics by type + status efficiently
+    await queryInterface.addIndex("MatchGraphics", [
+      "graphicType",
+      "status",
+      "createdAt",
+    ]);
   },
 
   async down(queryInterface) {
-    await queryInterface.dropTable('MatchGraphics');
+    await queryInterface.dropTable("MatchGraphics");
   },
 };
