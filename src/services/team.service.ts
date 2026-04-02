@@ -31,7 +31,7 @@ export const teamService = {
     let logoPublicId: string | null = null;
 
     if (file) {
-      const result = await uploadImage(file.buffer, "lfc-studio/teams");
+      const result = await uploadImage(file.buffer, "eol-graphics-studio/teams");
       logoUrl = result.url;
       logoPublicId = result.publicId;
     }
@@ -63,7 +63,7 @@ export const teamService = {
         await deleteImage(team.logoPublicId);
       }
 
-      const result = await uploadImage(file.buffer, "lfc-studio/teams");
+      const result = await uploadImage(file.buffer, "eol-graphics-studio/teams");
 
       const oldLogo = team.logoPublicId;
 

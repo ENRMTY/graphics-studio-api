@@ -39,7 +39,7 @@ export const competitionService = {
     let iconPublicId: string | null = null;
 
     if (file) {
-      const result = await uploadImage(file.buffer, "lfc-studio/competitions");
+      const result = await uploadImage(file.buffer, "eol-graphics-studio/competitions");
       iconUrl = result.url;
       iconPublicId = result.publicId;
     }
@@ -81,7 +81,7 @@ export const competitionService = {
         await deleteImage(competition.iconPublicId);
       }
 
-      const result = await uploadImage(file.buffer, "lfc-studio/competitions");
+      const result = await uploadImage(file.buffer, "eol-graphics-studio/competitions");
 
       competition.iconUrl = result.url;
       competition.iconPublicId = result.publicId;

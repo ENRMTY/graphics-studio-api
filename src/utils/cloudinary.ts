@@ -7,9 +7,9 @@ cloudinary.config({
 });
 
 export type UploadFolder =
-  | "lfc-studio/teams"
-  | "lfc-studio/competitions"
-  | "lfc-studio/backgrounds";
+  | "eol-graphics-studio/teams"
+  | "eol-graphics-studio/competitions"
+  | "eol-graphics-studio/backgrounds";
 
 export interface UploadResult {
   url: string;
