@@ -22,11 +22,16 @@ export const teamService = {
       throw new HttpError(400, "name is required");
     }
 
+    const existingTeam = await teamRepository.findByName(name.trim());
+    if (existingTeam) {
+      throw new HttpError(400, "A team with this name already exists");
+    }
+
     let logoUrl: string | null = null;
     let logoPublicId: string | null = null;
 
     if (file) {
-      const result = await uploadImage(file.buffer, "lfc-studio/teams");
+      const result = await uploadImage(file.buffer, "eol-graphics-studio/teams");
       logoUrl = result.url;
       logoPublicId = result.publicId;
     }
@@ -48,12 +53,17 @@ export const teamService = {
       team.name = name.trim();
     }
 
+    const existingTeam = await teamRepository.findByName(team.name);
+    if (existingTeam && existingTeam.id !== team.id) {
+      throw new HttpError(400, "A team with this name already exists");
+    }
+
     if (file) {
       if (team.logoPublicId) {
         await deleteImage(team.logoPublicId);
       }
 
-      const result = await uploadImage(file.buffer, "lfc-studio/teams");
+      const result = await uploadImage(file.buffer, "eol-graphics-studio/teams");
 
       const oldLogo = team.logoPublicId;
 
