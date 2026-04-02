@@ -56,7 +56,6 @@ export const competitionService = {
     const { id, name, color, file } = input;
 
     const competition = await competitionRepository.findById(id);
-
     if (!competition) {
       throw new HttpError(404, "Competition not found");
     }
@@ -92,7 +91,6 @@ export const competitionService = {
 
   async deleteCompetition(id: string) {
     const competition = await competitionRepository.findById(id);
-
     if (!competition) {
       throw new HttpError(404, "Competition not found");
     }
