@@ -136,7 +136,7 @@ export const graphicsService = {
       await deleteImage(graphic.bgImagePublicId);
     }
 
-    const result = await uploadImage(file.buffer, "lfc-studio/backgrounds");
+    const result = await uploadImage(file.buffer, "eol-graphics-studio/backgrounds");
 
     graphic.bgImageUrl = result.url;
     graphic.bgImagePublicId = result.publicId;
