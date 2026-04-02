@@ -137,7 +137,7 @@ MatchGraphic.init(
       allowNull: true,
     },
     competitionName: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(500),
       allowNull: true,
     },
     competitionIconUrl: {
@@ -153,7 +153,7 @@ MatchGraphic.init(
       allowNull: true,
     },
     homeTeamName: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(500),
       allowNull: true,
     },
     homeTeamLogoUrl: {
@@ -165,7 +165,7 @@ MatchGraphic.init(
       allowNull: true,
     },
     awayTeamName: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(500),
       allowNull: true,
     },
     awayTeamLogoUrl: {
@@ -194,7 +194,7 @@ MatchGraphic.init(
       allowNull: true,
     },
     venue: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
   },
