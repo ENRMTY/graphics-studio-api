@@ -8,6 +8,11 @@ export const teamRepository = {
 
   findById: (id: string) => Team.findByPk(id),
 
+  findByName: (name: string) =>
+    Team.findOne({
+      where: { name },
+    }),
+
   create: (data: {
     name: string;
     logoUrl: string | null;

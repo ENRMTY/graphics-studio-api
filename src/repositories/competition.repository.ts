@@ -13,6 +13,11 @@ export const competitionRepository = {
 
   bulkCreate: (data: any) => Competition.bulkCreate(data),
 
+  findByName: (name: string) =>
+    Competition.findOne({
+      where: { name },
+    }),
+
   findAll: () =>
     Competition.findAll({
       order: [
