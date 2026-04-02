@@ -1,0 +1,21 @@
+import { MatchGraphic } from "../models";
+
+export const UPDATABLE_FIELDS: Array<keyof MatchGraphic> = [
+  "status",
+  "competitionId",
+  "competitionName",
+  "competitionIconUrl",
+  "competitionColor",
+  "homeTeamId",
+  "homeTeamName",
+  "homeTeamLogoUrl",
+  "awayTeamId",
+  "awayTeamName",
+  "awayTeamLogoUrl",
+  "homeScore",
+  "awayScore",
+  "events",
+  "matchDate",
+  "kickoffTime",
+  "venue",
+];
