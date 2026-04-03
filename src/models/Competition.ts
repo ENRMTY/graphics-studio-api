@@ -3,6 +3,7 @@ import sequelize from "../config/sequelize";
 
 export interface CompetitionAttributes {
   id: string;
+  userId: string | null;
   name: string;
   iconUrl: string | null;
   iconPublicId: string | null;
@@ -15,7 +16,7 @@ export interface CompetitionAttributes {
 
 export interface CompetitionCreationAttributes extends Optional<
   CompetitionAttributes,
-  "id" | "iconUrl" | "iconPublicId" | "isDefault" | "sortOrder"
+  "id" | "userId" | "iconUrl" | "iconPublicId" | "isDefault" | "sortOrder"
 > {}
 
 class Competition
@@ -23,6 +24,7 @@ class Competition
   implements CompetitionAttributes
 {
   declare id: string;
+  declare userId: string | null;
   declare name: string;
   declare iconUrl: string | null;
   declare iconPublicId: string | null;
@@ -40,6 +42,12 @@ Competition.init(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
       allowNull: false,
+    },
+    userId: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: { model: "Users", key: "id" },
+      onDelete: "CASCADE",
     },
     name: {
       type: DataTypes.STRING,

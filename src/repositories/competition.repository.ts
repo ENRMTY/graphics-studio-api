@@ -18,8 +18,9 @@ export const competitionRepository = {
       where: { name },
     }),
 
-  findAll: () =>
+  findAll: (userId?: string) =>
     Competition.findAll({
+      where: userId ? { userId } : {},
       order: [
         ["sortOrder", "ASC"],
         ["name", "ASC"],

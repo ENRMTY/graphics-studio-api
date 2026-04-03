@@ -11,17 +11,19 @@ type FindGraphicsOptions = {
 };
 
 export const graphicsRepository = {
-  async findAll(options: FindGraphicsOptions) {
-    const { type, status, limit, offset } = options;
+  async findAll(options: FindGraphicsOptions & { userId?: string }) {
+    const { type, status, limit, offset, userId } = options;
 
     const where: Record<string, unknown> = {};
 
     if (type) {
       where.graphicType = type;
     }
-
     if (status) {
       where.status = status;
+    }
+    if (userId) {
+      where.userId = userId;
     }
 
     return MatchGraphic.findAndCountAll({

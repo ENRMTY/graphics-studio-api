@@ -14,6 +14,7 @@ export interface MatchEvent {
 
 export interface MatchGraphicAttributes {
   id: string;
+  userId: string | null;
   graphicType: GraphicType;
   status: GraphicStatus;
 
@@ -50,6 +51,7 @@ export interface MatchGraphicAttributes {
 export interface MatchGraphicCreationAttributes extends Optional<
   MatchGraphicAttributes,
   | "id"
+  | "userId"
   | "status"
   | "bgImageUrl"
   | "bgImagePublicId"
@@ -76,6 +78,7 @@ class MatchGraphic
   implements MatchGraphicAttributes
 {
   declare id: string;
+  declare userId: string | null;
   declare graphicType: GraphicType;
   declare status: GraphicStatus;
 
@@ -114,6 +117,12 @@ MatchGraphic.init(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
       allowNull: false,
+    },
+    userId: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: { model: "Users", key: "id" },
+      onDelete: "CASCADE",
     },
     graphicType: {
       type: DataTypes.ENUM("fulltime", "halftime", "matchday"),

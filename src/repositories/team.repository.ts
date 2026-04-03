@@ -1,8 +1,9 @@
 import { Team } from "../models";
 
 export const teamRepository = {
-  findAll: () =>
+  findAll: (userId?: string) =>
     Team.findAll({
+      where: userId ? { userId } : {},
       order: [["name", "ASC"]],
     }),
 
@@ -15,6 +16,7 @@ export const teamRepository = {
 
   create: (data: {
     name: string;
+    userId: string | null;
     logoUrl: string | null;
     logoPublicId: string | null;
   }) => Team.create(data),

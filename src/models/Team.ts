@@ -3,6 +3,7 @@ import sequelize from "../config/sequelize";
 
 export interface TeamAttributes {
   id: string;
+  userId: string | null;
   name: string;
   logoUrl: string | null;
   logoPublicId: string | null;
@@ -12,7 +13,7 @@ export interface TeamAttributes {
 
 export interface TeamCreationAttributes extends Optional<
   TeamAttributes,
-  "id" | "logoUrl" | "logoPublicId"
+  "id" | "userId" | "logoUrl" | "logoPublicId"
 > {}
 
 class Team
@@ -20,6 +21,7 @@ class Team
   implements TeamAttributes
 {
   declare id: string;
+  declare userId: string | null;
   declare name: string;
   declare logoUrl: string | null;
   declare logoPublicId: string | null;
@@ -34,6 +36,12 @@ Team.init(
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
       allowNull: false,
+    },
+    userId: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      references: { model: "Users", key: "id" },
+      onDelete: "CASCADE",
     },
     name: {
       type: DataTypes.STRING,
