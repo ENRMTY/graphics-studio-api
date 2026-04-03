@@ -1,42 +1,26 @@
 import { Router } from "express";
 import { upload } from "../middleware/upload";
+import { authenticate } from "../middleware/auth";
 import {
-  createGraphic,
-  deleteGraphic,
-  getGraphic,
   getGraphics,
-  getLatestDrafts,
-  updateBackground,
+  getGraphic,
+  createGraphic,
   updateGraphic,
+  updateBackground,
+  deleteGraphic,
+  getLatestDrafts,
 } from "../controllers/graphics.controller";
 
 const router = Router();
 
-// GET /api/graphics
-// query params: type=fulltime|matchday  status=draft|published  limit=20  offset=0
-router.get("/", getGraphics);
+router.use(authenticate);
 
-// GET /api/graphics/:id
-router.get("/:id", getGraphic);
-
-// POST /api/graphics
-// creates a new draft (no image — background uploaded separately via PATCH /graphics/:id/background)
-router.post("/", createGraphic);
-
-// PATCH /api/graphics/:id
-// update any fields (except images — use /background endpoint)
-router.patch("/:id", updateGraphic);
-
-// PATCH /api/graphics/:id/background
-// separate endpoint for background image upload (multipart)
-router.patch("/:id/background", upload.single("background"), updateBackground);
-
-// DELETE /api/graphics/:id
-router.delete("/:id", deleteGraphic);
-
-// GET /api/graphics/drafts/latest
-// convenience endpoint — returns the most recent draft of each type
-// used by the frontend to restore session state on load
 router.get("/drafts/latest", getLatestDrafts);
+router.get("/", getGraphics);
+router.get("/:id", getGraphic);
+router.post("/", createGraphic);
+router.patch("/:id", updateGraphic);
+router.patch("/:id/background", upload.single("background"), updateBackground);
+router.delete("/:id", deleteGraphic);
 
 export default router;

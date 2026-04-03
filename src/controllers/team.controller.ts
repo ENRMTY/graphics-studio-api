@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
 import { teamService } from "../services/team.service";
 
-export const getTeams = async (_req: Request, res: Response) => {
-  const teams = await teamService.getTeams();
+const userId = (req: Request): string | undefined => (req as any).user?.id;
+
+export const getTeams = async (req: Request, res: Response) => {
+  const teams = await teamService.getTeams(userId(req));
 
   res.json({
     success: true,
@@ -20,7 +22,11 @@ export const getTeam = async (req: Request, res: Response) => {
 };
 
 export const createTeam = async (req: Request, res: Response) => {
-  const team = await teamService.createTeam(req.body.name, req.file);
+  const team = await teamService.createTeam(
+    req.body.name,
+    req.file,
+    userId(req),
+  );
 
   res.status(201).json({
     success: true,

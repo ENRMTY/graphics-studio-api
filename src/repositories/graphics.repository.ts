@@ -2,20 +2,18 @@ import { MatchGraphic } from "../models";
 import type { MatchGraphicCreationAttributes } from "../models/MatchGraphic";
 import { GraphicType } from "../models/MatchGraphic";
 
-// types
 type FindGraphicsOptions = {
   type?: string;
   status?: string;
   limit: number;
   offset: number;
+  userId?: string;
 };
 
 export const graphicsRepository = {
-  async findAll(options: FindGraphicsOptions & { userId?: string }) {
+  async findAll(options: FindGraphicsOptions) {
     const { type, status, limit, offset, userId } = options;
-
     const where: Record<string, unknown> = {};
-
     if (type) {
       where.graphicType = type;
     }
@@ -42,9 +40,13 @@ export const graphicsRepository = {
 
   delete: (graphic: MatchGraphic) => graphic.destroy(),
 
-  findLatestDraftByType: (type: GraphicType) =>
+  findLatestDraftByType: (type: GraphicType, userId?: string) =>
     MatchGraphic.findOne({
-      where: { graphicType: type, status: "draft" },
+      where: {
+        graphicType: type,
+        status: "draft",
+        ...(userId ? { userId } : {}),
+      },
       order: [["updatedAt", "DESC"]],
     }),
 };
