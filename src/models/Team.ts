@@ -40,7 +40,7 @@ Team.init(
       allowNull: false,
     },
     logoUrl: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     logoPublicId: {
