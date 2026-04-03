@@ -2,11 +2,11 @@ import { competitionRepository } from "../repositories/competition.repository";
 import { HttpError } from "../middleware/errorHandler";
 import { uploadImage, deleteImage } from "../utils/cloudinary";
 
-// types
 type CreateCompetitionInput = {
   name?: string;
   color?: string;
   file?: Express.Multer.File;
+  userId?: string;
 };
 
 type UpdateCompetitionInput = {
@@ -17,21 +17,19 @@ type UpdateCompetitionInput = {
 };
 
 export const competitionService = {
-  async getCompetitions() {
-    return competitionRepository.findAll();
+  async getCompetitions(userId?: string) {
+    return competitionRepository.findAll(userId);
   },
 
   async createCompetition(input: CreateCompetitionInput) {
-    const { name, color, file } = input;
+    const { name, color, file, userId } = input;
 
     if (!name?.trim()) {
       throw new HttpError(400, "name is required");
     }
 
-    const existingCompetition = await competitionRepository.findByName(
-      name.trim(),
-    );
-    if (existingCompetition) {
+    const existing = await competitionRepository.findByName(name.trim());
+    if (existing) {
       throw new HttpError(400, "A competition with this name already exists");
     }
 
@@ -39,7 +37,10 @@ export const competitionService = {
     let iconPublicId: string | null = null;
 
     if (file) {
-      const result = await uploadImage(file.buffer, "eol-graphics-studio/competitions");
+      const result = await uploadImage(
+        file.buffer,
+        "eol-graphics-studio/competitions",
+      );
       iconUrl = result.url;
       iconPublicId = result.publicId;
     }
@@ -49,6 +50,7 @@ export const competitionService = {
       color: color ?? "#C8102E",
       iconUrl,
       iconPublicId,
+      userId: userId ?? null,
     });
   },
 
@@ -61,14 +63,11 @@ export const competitionService = {
     }
 
     if (name?.trim()) {
+      const existing = await competitionRepository.findByName(name.trim());
+      if (existing && existing.id !== competition.id) {
+        throw new HttpError(400, "A competition with this name already exists");
+      }
       competition.name = name.trim();
-    }
-
-    const existingCompetition = await competitionRepository.findByName(
-      competition.name,
-    );
-    if (existingCompetition && existingCompetition.id !== competition.id) {
-      throw new HttpError(400, "A competition with this name already exists");
     }
 
     if (color?.trim()) {
@@ -79,9 +78,10 @@ export const competitionService = {
       if (competition.iconPublicId) {
         await deleteImage(competition.iconPublicId);
       }
-
-      const result = await uploadImage(file.buffer, "eol-graphics-studio/competitions");
-
+      const result = await uploadImage(
+        file.buffer,
+        "eol-graphics-studio/competitions",
+      );
       competition.iconUrl = result.url;
       competition.iconPublicId = result.publicId;
     }
@@ -94,7 +94,6 @@ export const competitionService = {
     if (!competition) {
       throw new HttpError(404, "Competition not found");
     }
-
     if (competition.iconPublicId) {
       await deleteImage(competition.iconPublicId);
     }

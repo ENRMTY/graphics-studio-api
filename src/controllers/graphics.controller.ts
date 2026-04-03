@@ -1,20 +1,18 @@
 import { Request, Response } from "express";
 import { graphicsService } from "../services/graphics.service";
 
-export const getGraphics = async (req: Request, res: Response) => {
-  const { type, status, limit, offset } = req.query as {
-    type?: string;
-    status?: string;
-    limit?: string;
-    offset?: string;
-  };
+const userId = (req: Request): string | undefined => (req as any).user?.id;
 
-  const { count, rows } = await graphicsService.getGraphics({
-    type,
-    status,
-    limit,
-    offset,
-  });
+export const getGraphics = async (req: Request, res: Response) => {
+  const { type, status, limit, offset } = req.query as Record<
+    string,
+    string | undefined
+  >;
+
+  const { count, rows } = await graphicsService.getGraphics(
+    { type, status, limit, offset },
+    userId(req),
+  );
 
   res.json({
     success: true,
@@ -33,7 +31,7 @@ export const getGraphic = async (req: Request, res: Response) => {
 };
 
 export const createGraphic = async (req: Request, res: Response) => {
-  const graphic = await graphicsService.createGraphic(req.body);
+  const graphic = await graphicsService.createGraphic(req.body, userId(req));
 
   res.status(201).json({
     success: true,
@@ -71,9 +69,9 @@ export const deleteGraphic = async (req: Request, res: Response) => {
   });
 };
 
-export const getLatestDrafts = async (_req: Request, res: Response) => {
-  const drafts = await graphicsService.getLatestDrafts();
-
+export const getLatestDrafts = async (req: Request, res: Response) => {
+  const drafts = await graphicsService.getLatestDrafts(userId(req));
+  
   res.json({
     success: true,
     data: drafts,

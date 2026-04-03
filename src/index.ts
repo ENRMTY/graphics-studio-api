@@ -9,6 +9,7 @@ import sequelize from "./config/sequelize";
 import teamsRouter from "./routes/team.route";
 import competitionsRouter from "./routes/competition.route";
 import graphicsRouter from "./routes/graphics.route";
+import authRouter from "./routes/auth.route";
 import { errorHandler, notFound } from "./middleware/errorHandler";
 
 dotenv.config();
@@ -32,6 +33,7 @@ app.get("/health", (_req, res) => {
 });
 
 // routes
+app.use("/api/auth", authRouter);
 app.use("/api/teams", teamsRouter);
 app.use("/api/competitions", competitionsRouter);
 app.use("/api/graphics", graphicsRouter);

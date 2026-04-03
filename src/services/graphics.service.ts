@@ -5,7 +5,6 @@ import type { GraphicType, GraphicStatus } from "../models/MatchGraphic";
 import { uploadImage, deleteImage } from "../utils/cloudinary";
 import { UPDATABLE_FIELDS as updatable } from "../constants/graphics.constants";
 
-// types
 type GetGraphicsInput = {
   type?: string;
   status?: string;
@@ -22,15 +21,15 @@ type UpdateGraphicInput = Partial<MatchGraphic> & {
 };
 
 export const graphicsService = {
-  async getGraphics(input: GetGraphicsInput) {
+  async getGraphics(input: GetGraphicsInput, userId?: string) {
     const limit = Math.min(parseInt(input.limit ?? "50", 10) || 50, 100);
     const offset = parseInt(input.offset ?? "0", 10) || 0;
-
     return graphicsRepository.findAll({
       type: input.type,
       status: input.status,
       limit,
       offset,
+      userId,
     });
   },
 
@@ -47,11 +46,10 @@ export const graphicsService = {
     return graphic;
   },
 
-  async createGraphic(body: CreateGraphicInput) {
+  async createGraphic(body: CreateGraphicInput, userId?: string) {
     if (!body.graphicType) {
       throw new HttpError(400, "graphicType is required");
     }
-
     if (!["fulltime", "matchday", "halftime"].includes(body.graphicType)) {
       throw new HttpError(
         400,
@@ -62,6 +60,7 @@ export const graphicsService = {
     return graphicsRepository.create({
       graphicType: body.graphicType,
       status: "draft",
+      userId: userId ?? null,
 
       competitionId: body.competitionId ?? null,
       competitionName: body.competitionName ?? null,
@@ -93,9 +92,7 @@ export const graphicsService = {
     }
 
     for (const key of updatable) {
-      if (key in body) {
-        (graphic as any)[key] = (body as any)[key];
-      }
+      if (key in body) (graphic as any)[key] = (body as any)[key];
     }
 
     await graphicsRepository.save(graphic);
@@ -108,12 +105,9 @@ export const graphicsService = {
     if (!graphic) {
       throw new HttpError(404, "Graphic not found");
     }
-
     if (!file) {
       throw new HttpError(400, "No image file provided");
     }
-
-    // remove previous background
     if (graphic.bgImagePublicId) {
       await deleteImage(graphic.bgImagePublicId);
     }
@@ -144,17 +138,12 @@ export const graphicsService = {
     await graphicsRepository.delete(graphic);
   },
 
-  async getLatestDrafts() {
+  async getLatestDrafts(userId?: string) {
     const [fulltime, halftime, matchday] = await Promise.all([
-      graphicsRepository.findLatestDraftByType("fulltime"),
-      graphicsRepository.findLatestDraftByType("halftime"),
-      graphicsRepository.findLatestDraftByType("matchday"),
+      graphicsRepository.findLatestDraftByType("fulltime", userId),
+      graphicsRepository.findLatestDraftByType("halftime", userId),
+      graphicsRepository.findLatestDraftByType("matchday", userId),
     ]);
-
-    return {
-      fulltime,
-      halftime,
-      matchday,
-    };
+    return { fulltime, halftime, matchday };
   },
 };

@@ -1,8 +1,6 @@
-// external
 import { Router } from "express";
 import { upload } from "../middleware/upload";
-
-// internal
+import { authenticate } from "../middleware/auth";
 import {
   getCompetitions,
   createCompetition,
@@ -12,16 +10,11 @@ import {
 
 const router = Router();
 
-// GET /api/competitions
+router.use(authenticate);
+
 router.get("/", getCompetitions);
-
-// POST /api/competitions
 router.post("/", upload.single("icon"), createCompetition);
-
-// PATCH /api/competitions/:id
 router.patch("/:id", upload.single("icon"), updateCompetition);
-
-// DELETE /api/competitions/:id
 router.delete("/:id", deleteCompetition);
 
 export default router;
