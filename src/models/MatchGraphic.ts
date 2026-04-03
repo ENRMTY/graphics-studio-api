@@ -125,11 +125,11 @@ MatchGraphic.init(
       defaultValue: "draft",
     },
     bgImageUrl: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     bgImagePublicId: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     competitionId: {
@@ -141,7 +141,7 @@ MatchGraphic.init(
       allowNull: true,
     },
     competitionIconUrl: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     competitionColor: {
@@ -157,7 +157,7 @@ MatchGraphic.init(
       allowNull: true,
     },
     homeTeamLogoUrl: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     awayTeamId: {
@@ -169,7 +169,7 @@ MatchGraphic.init(
       allowNull: true,
     },
     awayTeamLogoUrl: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     homeScore: {

@@ -46,7 +46,7 @@ Competition.init(
       allowNull: false,
     },
     iconUrl: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
     iconPublicId: {
