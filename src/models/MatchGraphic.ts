@@ -1,7 +1,12 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import sequelize from "../config/sequelize";
 
-export type GraphicType = "fulltime" | "halftime" | "matchday";
+export type GraphicType =
+  | "fulltime"
+  | "halftime"
+  | "matchday"
+  | "stats"
+  | "quote";
 export type GraphicStatus = "draft" | "published";
 
 export interface MatchEvent {
@@ -10,6 +15,13 @@ export interface MatchEvent {
   player: string;
   minute: string;
   side: "home" | "away";
+}
+
+export interface StatItem {
+  id: string;
+  label: string;
+  value: string;
+  enabled: boolean;
 }
 
 export interface MatchGraphicAttributes {
@@ -44,6 +56,17 @@ export interface MatchGraphicAttributes {
   kickoffTime: string | null;
   venue: string | null;
 
+  // stats fields
+  playerName: string | null;
+  playerImageUrl: string | null;
+  playerImagePublicId: string | null;
+  statsData: StatItem[] | null;
+  accentColor: string | null;
+
+  // quote fields
+  playerRole: string | null;
+  quoteText: string | null;
+
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -71,6 +94,13 @@ export interface MatchGraphicCreationAttributes extends Optional<
   | "matchDate"
   | "kickoffTime"
   | "venue"
+  | "playerName"
+  | "playerImageUrl"
+  | "playerImagePublicId"
+  | "statsData"
+  | "accentColor"
+  | "playerRole"
+  | "quoteText"
 > {}
 
 class MatchGraphic
@@ -106,6 +136,15 @@ class MatchGraphic
   declare kickoffTime: string | null;
   declare venue: string | null;
 
+  declare playerName: string | null;
+  declare playerImageUrl: string | null;
+  declare playerImagePublicId: string | null;
+  declare statsData: StatItem[] | null;
+  declare accentColor: string | null;
+
+  declare playerRole: string | null;
+  declare quoteText: string | null;
+
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
 }
@@ -125,7 +164,13 @@ MatchGraphic.init(
       onDelete: "CASCADE",
     },
     graphicType: {
-      type: DataTypes.ENUM("fulltime", "halftime", "matchday"),
+      type: DataTypes.ENUM(
+        "fulltime",
+        "halftime",
+        "matchday",
+        "stats",
+        "quote",
+      ),
       allowNull: false,
     },
     status: {
@@ -146,7 +191,7 @@ MatchGraphic.init(
       allowNull: true,
     },
     competitionName: {
-      type: DataTypes.STRING(500),
+      type: DataTypes.STRING(100),
       allowNull: true,
     },
     competitionIconUrl: {
@@ -162,7 +207,7 @@ MatchGraphic.init(
       allowNull: true,
     },
     homeTeamName: {
-      type: DataTypes.STRING(500),
+      type: DataTypes.STRING(100),
       allowNull: true,
     },
     homeTeamLogoUrl: {
@@ -174,7 +219,7 @@ MatchGraphic.init(
       allowNull: true,
     },
     awayTeamName: {
-      type: DataTypes.STRING(500),
+      type: DataTypes.STRING(100),
       allowNull: true,
     },
     awayTeamLogoUrl: {
@@ -203,6 +248,34 @@ MatchGraphic.init(
       allowNull: true,
     },
     venue: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    playerName: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+    },
+    playerImageUrl: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    playerImagePublicId: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    statsData: {
+      type: DataTypes.JSONB,
+      allowNull: true,
+    },
+    accentColor: {
+      type: DataTypes.STRING(7),
+      allowNull: true,
+    },
+    playerRole: {
+      type: DataTypes.STRING(50),
+      allowNull: true,
+    },
+    quoteText: {
       type: DataTypes.TEXT,
       allowNull: true,
     },

@@ -60,6 +60,18 @@ export const updateBackground = async (req: Request, res: Response) => {
   });
 };
 
+export const updatePlayerImage = async (req: Request, res: Response) => {
+  const graphic = await graphicsService.updatePlayerImage(
+    req.params.id,
+    req.file,
+  );
+
+  res.json({
+    success: true,
+    data: graphic,
+  });
+};
+
 export const deleteGraphic = async (req: Request, res: Response) => {
   await graphicsService.deleteGraphic(req.params.id);
 
@@ -71,7 +83,7 @@ export const deleteGraphic = async (req: Request, res: Response) => {
 
 export const getLatestDrafts = async (req: Request, res: Response) => {
   const drafts = await graphicsService.getLatestDrafts(userId(req));
-  
+
   res.json({
     success: true,
     data: drafts,

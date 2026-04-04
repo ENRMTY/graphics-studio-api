@@ -44,7 +44,7 @@ Team.init(
       onDelete: "CASCADE",
     },
     name: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(70),
       allowNull: false,
     },
     logoUrl: {

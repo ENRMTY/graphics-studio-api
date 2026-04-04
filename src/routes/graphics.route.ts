@@ -9,6 +9,7 @@ import {
   updateBackground,
   deleteGraphic,
   getLatestDrafts,
+  updatePlayerImage,
 } from "../controllers/graphics.controller";
 
 const router = Router();
@@ -21,6 +22,11 @@ router.get("/:id", getGraphic);
 router.post("/", createGraphic);
 router.patch("/:id", updateGraphic);
 router.patch("/:id/background", upload.single("background"), updateBackground);
+router.patch(
+  "/:id/player-image",
+  upload.single("playerImage"),
+  updatePlayerImage,
+);
 router.delete("/:id", deleteGraphic);
 
 export default router;

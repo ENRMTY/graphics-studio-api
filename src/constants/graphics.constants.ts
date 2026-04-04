@@ -18,4 +18,11 @@ export const UPDATABLE_FIELDS: Array<keyof MatchGraphic> = [
   "matchDate",
   "kickoffTime",
   "venue",
+  "playerName",
+  "playerImageUrl",
+  "playerImagePublicId",
+  "statsData",
+  "accentColor",
+  "playerRole",
+  "quoteText",
 ];

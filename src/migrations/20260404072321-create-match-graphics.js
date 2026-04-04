@@ -10,42 +10,62 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
       },
+
+      userId: {
+        type: Sequelize.UUID,
+        allowNull: true,
+        references: {
+          model: "Users",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      },
+
       graphicType: {
-        // 'fulltime' | 'matchday'
-        type: Sequelize.ENUM("fulltime", "matchday"),
+        type: Sequelize.ENUM(
+          "fulltime",
+          "halftime",
+          "matchday",
+          "stats",
+          "quote",
+        ),
         allowNull: false,
       },
+
       status: {
-        // 'draft' | 'published'
         type: Sequelize.ENUM("draft", "published"),
         allowNull: false,
         defaultValue: "draft",
       },
 
-      // Background image
+      // background
       bgImageUrl: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       bgImagePublicId: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
 
-      // Competition (denormalised — we store what was selected at time of creation)
+      // competition (snapshot + FK)
       competitionId: {
         type: Sequelize.UUID,
         allowNull: true,
-        references: { model: "Competitions", key: "id" },
+        references: {
+          model: "Competitions",
+          key: "id",
+        },
         onDelete: "SET NULL",
         onUpdate: "CASCADE",
       },
       competitionName: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
         allowNull: true,
       },
       competitionIconUrl: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
       competitionColor: {
@@ -53,40 +73,46 @@ module.exports = {
         allowNull: true,
       },
 
-      // teams (FK + snapshot of name/logo at time of creation)
+      // teams
       homeTeamId: {
         type: Sequelize.UUID,
         allowNull: true,
-        references: { model: "Teams", key: "id" },
+        references: {
+          model: "Teams",
+          key: "id",
+        },
         onDelete: "SET NULL",
         onUpdate: "CASCADE",
       },
       homeTeamName: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
         allowNull: true,
       },
       homeTeamLogoUrl: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
 
       awayTeamId: {
         type: Sequelize.UUID,
         allowNull: true,
-        references: { model: "Teams", key: "id" },
+        references: {
+          model: "Teams",
+          key: "id",
+        },
         onDelete: "SET NULL",
         onUpdate: "CASCADE",
       },
       awayTeamName: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(100),
         allowNull: true,
       },
       awayTeamLogoUrl: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
 
-      // full-time specific
+      // full-time
       homeScore: {
         type: Sequelize.INTEGER,
         allowNull: true,
@@ -96,37 +122,71 @@ module.exports = {
         allowNull: true,
       },
       events: {
-        // JSON array of { id, type, player, minute, side }
         type: Sequelize.JSONB,
         allowNull: false,
         defaultValue: [],
       },
 
-      // match day specific
+      // matchday
       matchDate: {
         type: Sequelize.DATEONLY,
         allowNull: true,
       },
       kickoffTime: {
-        type: Sequelize.STRING(5), // e.g. "17:30"
+        type: Sequelize.STRING(25),
         allowNull: true,
       },
       venue: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
+
+      // stats
+      playerName: {
+        type: Sequelize.STRING(100),
+        allowNull: true,
+      },
+      playerImageUrl: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
+      playerImagePublicId: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
+      statsData: {
+        type: Sequelize.JSONB,
+        allowNull: true,
+      },
+      accentColor: {
+        type: Sequelize.STRING(7),
+        allowNull: true,
+      },
+
+      // quote
+      playerRole: {
+        type: Sequelize.STRING(50),
+        allowNull: true,
+      },
+      quoteText: {
+        type: Sequelize.TEXT,
         allowNull: true,
       },
 
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
       },
     });
 
-    // index for listing graphics by type + status efficiently
+    // indexes
+    await queryInterface.addIndex("MatchGraphics", ["userId"]);
     await queryInterface.addIndex("MatchGraphics", [
       "graphicType",
       "status",
@@ -134,7 +194,14 @@ module.exports = {
     ]);
   },
 
-  async down(queryInterface) {
+  async down(queryInterface, Sequelize) {
     await queryInterface.dropTable("MatchGraphics");
+
+    await queryInterface.sequelize.query(
+      'DROP TYPE IF EXISTS "enum_MatchGraphics_graphicType";',
+    );
+    await queryInterface.sequelize.query(
+      'DROP TYPE IF EXISTS "enum_MatchGraphics_status";',
+    );
   },
 };

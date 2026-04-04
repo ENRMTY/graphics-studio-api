@@ -50,10 +50,14 @@ export const graphicsService = {
     if (!body.graphicType) {
       throw new HttpError(400, "graphicType is required");
     }
-    if (!["fulltime", "matchday", "halftime"].includes(body.graphicType)) {
+    if (
+      !["fulltime", "matchday", "halftime", "stats", "quote"].includes(
+        body.graphicType,
+      )
+    ) {
       throw new HttpError(
         400,
-        "graphicType must be fulltime, matchday, or halftime",
+        "graphicType must be fulltime, matchday, halftime, stats, or quote",
       );
     }
 
@@ -82,6 +86,15 @@ export const graphicsService = {
       matchDate: body.matchDate ?? null,
       kickoffTime: body.kickoffTime ?? null,
       venue: body.venue ?? null,
+
+      playerName: body.playerName ?? null,
+      playerImageUrl: body.playerImageUrl ?? null,
+      playerImagePublicId: body.playerImagePublicId ?? null,
+      statsData: body.statsData ?? null,
+      accentColor: body.accentColor ?? null,
+
+      playerRole: body.playerRole ?? null,
+      quoteText: body.quoteText ?? null,
     });
   },
 
@@ -125,6 +138,31 @@ export const graphicsService = {
     return graphic;
   },
 
+  async updatePlayerImage(id: string, file?: Express.Multer.File) {
+    const graphic = await graphicsRepository.findById(id);
+    if (!graphic) {
+      throw new HttpError(404, "Graphic not found");
+    }
+    if (!file) {
+      throw new HttpError(400, "No image file provided");
+    }
+    if (graphic.playerImagePublicId) {
+      await deleteImage(graphic.playerImagePublicId);
+    }
+
+    const result = await uploadImage(
+      file.buffer,
+      "eol-graphics-studio/players",
+    );
+
+    graphic.playerImageUrl = result.url;
+    graphic.playerImagePublicId = result.publicId;
+
+    await graphicsRepository.save(graphic);
+
+    return graphic;
+  },
+
   async deleteGraphic(id: string) {
     const graphic = await graphicsRepository.findById(id);
     if (!graphic) {
@@ -139,11 +177,13 @@ export const graphicsService = {
   },
 
   async getLatestDrafts(userId?: string) {
-    const [fulltime, halftime, matchday] = await Promise.all([
+    const [fulltime, halftime, matchday, stats, quote] = await Promise.all([
       graphicsRepository.findLatestDraftByType("fulltime", userId),
       graphicsRepository.findLatestDraftByType("halftime", userId),
       graphicsRepository.findLatestDraftByType("matchday", userId),
+      graphicsRepository.findLatestDraftByType("stats", userId),
+      graphicsRepository.findLatestDraftByType("quote", userId),
     ]);
-    return { fulltime, halftime, matchday };
+    return { fulltime, halftime, matchday, stats, quote };
   },
 };
