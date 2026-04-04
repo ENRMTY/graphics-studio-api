@@ -9,6 +9,7 @@ cloudinary.config({
 export type UploadFolder =
   | "eol-graphics-studio/teams"
   | "eol-graphics-studio/competitions"
+  | "eol-graphics-studio/players"
   | "eol-graphics-studio/backgrounds";
 
 export interface UploadResult {

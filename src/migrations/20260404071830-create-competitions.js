@@ -10,38 +10,55 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
       },
+
+      userId: {
+        type: Sequelize.UUID,
+        allowNull: true,
+        references: {
+          model: "Users",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+      },
+
       name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(50),
         allowNull: false,
       },
+
       iconUrl: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       },
+
       iconPublicId: {
         type: Sequelize.STRING,
         allowNull: true,
       },
+
       color: {
-        type: Sequelize.STRING(7), // hex e.g. #C8102E
+        type: Sequelize.STRING(7),
         allowNull: false,
         defaultValue: "#C8102E",
       },
+
       isDefault: {
-        // marks the pre-seeded competitions
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false,
       },
+
       sortOrder: {
         type: Sequelize.INTEGER,
         allowNull: false,
         defaultValue: 99,
       },
+
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
       },
+
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
