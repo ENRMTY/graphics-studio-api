@@ -25,4 +25,7 @@ export const UPDATABLE_FIELDS: Array<keyof MatchGraphic> = [
   "accentColor",
   "playerRole",
   "quoteText",
+  "transferKind",
+  "transferFee",
+  "transferStatus",
 ];

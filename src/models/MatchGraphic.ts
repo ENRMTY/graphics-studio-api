@@ -6,7 +6,8 @@ export type GraphicType =
   | "halftime"
   | "matchday"
   | "stats"
-  | "quote";
+  | "quote"
+  | "transfer";
 export type GraphicStatus = "draft" | "published";
 
 export interface MatchEvent {
@@ -67,6 +68,11 @@ export interface MatchGraphicAttributes {
   playerRole: string | null;
   quoteText: string | null;
 
+  // transfer fields
+  transferKind: string | null;
+  transferFee: string | null;
+  transferStatus: string | null;
+
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -101,6 +107,9 @@ export interface MatchGraphicCreationAttributes extends Optional<
   | "accentColor"
   | "playerRole"
   | "quoteText"
+  | "transferKind"
+  | "transferFee"
+  | "transferStatus"
 > {}
 
 class MatchGraphic
@@ -145,6 +154,10 @@ class MatchGraphic
   declare playerRole: string | null;
   declare quoteText: string | null;
 
+  declare transferKind: string | null;
+  declare transferFee: string | null;
+  declare transferStatus: string | null;
+
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
 }
@@ -170,6 +183,7 @@ MatchGraphic.init(
         "matchday",
         "stats",
         "quote",
+        "transfer",
       ),
       allowNull: false,
     },
@@ -277,6 +291,18 @@ MatchGraphic.init(
     },
     quoteText: {
       type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    transferKind: {
+      type: DataTypes.STRING(20),
+      allowNull: true,
+    },
+    transferFee: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
+    },
+    transferStatus: {
+      type: DataTypes.STRING(20),
       allowNull: true,
     },
   },

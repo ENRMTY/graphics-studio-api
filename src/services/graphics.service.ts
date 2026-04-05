@@ -51,13 +51,18 @@ export const graphicsService = {
       throw new HttpError(400, "graphicType is required");
     }
     if (
-      !["fulltime", "matchday", "halftime", "stats", "quote"].includes(
-        body.graphicType,
-      )
+      ![
+        "fulltime",
+        "matchday",
+        "halftime",
+        "stats",
+        "quote",
+        "transfer",
+      ].includes(body.graphicType)
     ) {
       throw new HttpError(
         400,
-        "graphicType must be fulltime, matchday, halftime, stats, or quote",
+        "graphicType must be fulltime, matchday, halftime, stats, quote, or transfer",
       );
     }
 
@@ -95,6 +100,9 @@ export const graphicsService = {
 
       playerRole: body.playerRole ?? null,
       quoteText: body.quoteText ?? null,
+      transferKind: (body as any).transferKind ?? null,
+      transferFee: (body as any).transferFee ?? null,
+      transferStatus: (body as any).transferStatus ?? null,
     });
   },
 
@@ -177,13 +185,15 @@ export const graphicsService = {
   },
 
   async getLatestDrafts(userId?: string) {
-    const [fulltime, halftime, matchday, stats, quote] = await Promise.all([
-      graphicsRepository.findLatestDraftByType("fulltime", userId),
-      graphicsRepository.findLatestDraftByType("halftime", userId),
-      graphicsRepository.findLatestDraftByType("matchday", userId),
-      graphicsRepository.findLatestDraftByType("stats", userId),
-      graphicsRepository.findLatestDraftByType("quote", userId),
-    ]);
-    return { fulltime, halftime, matchday, stats, quote };
+    const [fulltime, halftime, matchday, stats, quote, transfer] =
+      await Promise.all([
+        graphicsRepository.findLatestDraftByType("fulltime", userId),
+        graphicsRepository.findLatestDraftByType("halftime", userId),
+        graphicsRepository.findLatestDraftByType("matchday", userId),
+        graphicsRepository.findLatestDraftByType("stats", userId),
+        graphicsRepository.findLatestDraftByType("quote", userId),
+        graphicsRepository.findLatestDraftByType("transfer", userId),
+      ]);
+    return { fulltime, halftime, matchday, stats, quote, transfer };
   },
 };
