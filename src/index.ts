@@ -9,6 +9,7 @@ import sequelize from "./config/sequelize";
 import teamsRouter from "./routes/team.route";
 import competitionsRouter from "./routes/competition.route";
 import graphicsRouter from "./routes/graphics.route";
+import playerRouter from "./routes/player.route";
 import authRouter from "./routes/auth.route";
 import { errorHandler, notFound } from "./middleware/errorHandler";
 
@@ -37,6 +38,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/teams", teamsRouter);
 app.use("/api/competitions", competitionsRouter);
 app.use("/api/graphics", graphicsRouter);
+app.use("/api/players", playerRouter);
 
 // 404 + error handler
 app.use(notFound);
