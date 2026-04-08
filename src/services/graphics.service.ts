@@ -86,6 +86,8 @@ export const graphicsService = {
 
       homeScore: body.homeScore ?? null,
       awayScore: body.awayScore ?? null,
+      aggScoreHome: (body as any).aggScoreHome ?? null,
+      aggScoreAway: (body as any).aggScoreAway ?? null,
       events: body.events ?? [],
 
       matchDate: body.matchDate ?? null,
