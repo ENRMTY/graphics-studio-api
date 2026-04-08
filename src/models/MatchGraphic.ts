@@ -50,6 +50,8 @@ export interface MatchGraphicAttributes {
   // full-time fields
   homeScore: number | null;
   awayScore: number | null;
+  aggScoreHome: number | null;
+  aggScoreAway: number | null;
   events: MatchEvent[];
 
   // match day fields
@@ -96,6 +98,8 @@ export interface MatchGraphicCreationAttributes extends Optional<
   | "awayTeamLogoUrl"
   | "homeScore"
   | "awayScore"
+  | "aggScoreHome"
+  | "aggScoreAway"
   | "events"
   | "matchDate"
   | "kickoffTime"
@@ -139,6 +143,8 @@ class MatchGraphic
 
   declare homeScore: number | null;
   declare awayScore: number | null;
+  declare aggScoreHome: number | null;
+  declare aggScoreAway: number | null;
   declare events: MatchEvent[];
 
   declare matchDate: string | null;
@@ -245,6 +251,14 @@ MatchGraphic.init(
       allowNull: true,
     },
     awayScore: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    aggScoreHome: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    aggScoreAway: {
       type: DataTypes.INTEGER,
       allowNull: true,
     },

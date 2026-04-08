@@ -14,6 +14,8 @@ export const UPDATABLE_FIELDS: Array<keyof MatchGraphic> = [
   "awayTeamLogoUrl",
   "homeScore",
   "awayScore",
+  "aggScoreHome",
+  "aggScoreAway",
   "events",
   "matchDate",
   "kickoffTime",
