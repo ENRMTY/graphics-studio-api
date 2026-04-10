@@ -28,10 +28,10 @@ export const competitionService = {
       throw new HttpError(400, "name is required");
     }
 
-    const existing = await competitionRepository.findByName(name.trim());
-    if (existing) {
+    /*const existing = await competitionRepository.findByName(name.trim());
+    /*if (existing) {
       throw new HttpError(400, "A competition with this name already exists");
-    }
+    }*/
 
     let iconUrl: string | null = null;
     let iconPublicId: string | null = null;
@@ -63,10 +63,10 @@ export const competitionService = {
     }
 
     if (name?.trim()) {
-      const existing = await competitionRepository.findByName(name.trim());
+      /*const existing = await competitionRepository.findByName(name.trim());
       if (existing && existing.id !== competition.id) {
         throw new HttpError(400, "A competition with this name already exists");
-      }
+      }*/
       competition.name = name.trim();
     }
 

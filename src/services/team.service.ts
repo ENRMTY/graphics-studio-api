@@ -20,10 +20,10 @@ export const teamService = {
       throw new HttpError(400, "name is required");
     }
 
-    const existingTeam = await teamRepository.findByName(name.trim());
+    /*const existingTeam = await teamRepository.findByName(name.trim());
     if (existingTeam) {
       throw new HttpError(400, "A team with this name already exists");
-    }
+    }*/
 
     let logoUrl: string | null = null;
     let logoPublicId: string | null = null;
@@ -52,10 +52,10 @@ export const teamService = {
     }
 
     if (name?.trim()) {
-      const existingTeam = await teamRepository.findByName(name.trim());
+      /*const existingTeam = await teamRepository.findByName(name.trim());
       if (existingTeam && existingTeam.id !== team.id) {
         throw new HttpError(400, "A team with this name already exists");
-      }
+      }*/
       team.name = name.trim();
     }
 
