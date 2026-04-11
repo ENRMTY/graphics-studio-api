@@ -175,6 +175,34 @@ export const graphicsService = {
     return graphic;
   },
 
+  async clearBackground(id: string) {
+    const graphic = await graphicsRepository.findById(id);
+    if (!graphic) {
+      throw new HttpError(404, "Graphic not found");
+    }
+    if (graphic.bgImagePublicId) {
+      await deleteImage(graphic.bgImagePublicId);
+    }
+    graphic.bgImageUrl = null;
+    graphic.bgImagePublicId = null;
+    await graphicsRepository.save(graphic);
+    return graphic;
+  },
+
+  async clearPlayerImage(id: string) {
+    const graphic = await graphicsRepository.findById(id);
+    if (!graphic) {
+      throw new HttpError(404, "Graphic not found");
+    }
+    if (graphic.playerImagePublicId) {
+      await deleteImage(graphic.playerImagePublicId);
+    }
+    graphic.playerImageUrl = null;
+    graphic.playerImagePublicId = null;
+    await graphicsRepository.save(graphic);
+    return graphic;
+  },
+
   async deleteGraphic(id: string) {
     const graphic = await graphicsRepository.findById(id);
     if (!graphic) {

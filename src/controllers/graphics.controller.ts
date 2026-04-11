@@ -72,6 +72,16 @@ export const updatePlayerImage = async (req: Request, res: Response) => {
   });
 };
 
+export const clearBackground = async (req: Request, res: Response) => {
+  const graphic = await graphicsService.clearBackground(req.params.id);
+  res.json({ success: true, data: graphic });
+};
+
+export const clearPlayerImage = async (req: Request, res: Response) => {
+  const graphic = await graphicsService.clearPlayerImage(req.params.id);
+  res.json({ success: true, data: graphic });
+};
+
 export const deleteGraphic = async (req: Request, res: Response) => {
   await graphicsService.deleteGraphic(req.params.id);
 
