@@ -69,6 +69,8 @@ export interface MatchGraphicAttributes {
   // quote fields
   playerRole: string | null;
   quoteText: string | null;
+  matchContext: string | null;
+  graphicLayout: string | null;
 
   // transfer fields
   transferKind: string | null;
@@ -111,6 +113,8 @@ export interface MatchGraphicCreationAttributes extends Optional<
   | "accentColor"
   | "playerRole"
   | "quoteText"
+  | "matchContext"
+  | "graphicLayout"
   | "transferKind"
   | "transferFee"
   | "transferStatus"
@@ -159,6 +163,8 @@ class MatchGraphic
 
   declare playerRole: string | null;
   declare quoteText: string | null;
+  declare matchContext: string | null;
+  declare graphicLayout: string | null;
 
   declare transferKind: string | null;
   declare transferFee: string | null;
@@ -305,6 +311,14 @@ MatchGraphic.init(
     },
     quoteText: {
       type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    matchContext: {
+      type: DataTypes.STRING(200),
+      allowNull: true,
+    },
+    graphicLayout: {
+      type: DataTypes.STRING(20),
       allowNull: true,
     },
     transferKind: {

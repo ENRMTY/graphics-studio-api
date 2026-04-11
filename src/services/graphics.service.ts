@@ -102,6 +102,8 @@ export const graphicsService = {
 
       playerRole: body.playerRole ?? null,
       quoteText: body.quoteText ?? null,
+      matchContext: (body as any).matchContext ?? null,
+      graphicLayout: (body as any).graphicLayout ?? null,
       transferKind: (body as any).transferKind ?? null,
       transferFee: (body as any).transferFee ?? null,
       transferStatus: (body as any).transferStatus ?? null,
