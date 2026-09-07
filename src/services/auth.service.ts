@@ -1,8 +1,12 @@
 import jwt from "jsonwebtoken";
 import { HttpError } from "../middleware/errorHandler";
 import User from "../models/User";
+import bcrypt from "bcryptjs";
 
 const JWT_SECRET = process.env.JWT_SECRET || "";
+const OTP_TTL_MS = 10 * 60 * 1000;
+
+const passwordResetOtps = new Map<string, { otp: string; expiresAt: number }>();
 
 export const authService = {
   async register(email: string, password: string, name?: string) {
@@ -41,5 +45,37 @@ export const authService = {
       throw new HttpError(404, "User not found");
     }
     return user;
+  },
+
+  async requestPasswordReset(email: string) {
+    const normalizedEmail = email.trim().toLowerCase();
+    const user = await User.findOne({ where: { email: normalizedEmail } });
+
+    if (user) {
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      passwordResetOtps.set(normalizedEmail, {
+        otp,
+        expiresAt: Date.now() + OTP_TTL_MS,
+      });
+      console.log(`[Auth]: Password reset OTP for ${normalizedEmail}: ${otp}`);
+    }
+  },
+
+  async resetPassword(email: string, otp: string, newPassword: string) {
+    const normalizedEmail = email.trim().toLowerCase();
+    const reset = passwordResetOtps.get(normalizedEmail);
+
+    if (!reset || reset.expiresAt < Date.now() || reset.otp !== otp.trim()) {
+      throw new HttpError(400, "Invalid or expired OTP");
+    }
+
+    const user = await User.findOne({ where: { email: normalizedEmail } });
+    if (!user) {
+      throw new HttpError(400, "Invalid or expired OTP");
+    }
+
+    user.password = await bcrypt.hash(newPassword, 10);
+    await user.save();
+    passwordResetOtps.delete(normalizedEmail);
   },
 };
