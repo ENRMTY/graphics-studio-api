@@ -8,13 +8,21 @@ export interface PlayerAttributes {
   number: number | null;
   position: string;
   lastUsed: Date;
+  photoUrl: string | null;
+  photoPublicId: string | null;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
 export interface PlayerCreationAttributes extends Optional<
   PlayerAttributes,
-  "id" | "userId" | "number" | "position" | "lastUsed"
+  | "id"
+  | "userId"
+  | "number"
+  | "position"
+  | "lastUsed"
+  | "photoUrl"
+  | "photoPublicId"
 > {}
 
 class Player
@@ -27,6 +35,8 @@ class Player
   declare number: number | null;
   declare position: string;
   declare lastUsed: Date;
+  declare photoUrl: string | null;
+  declare photoPublicId: string | null;
   declare readonly createdAt: Date;
   declare readonly updatedAt: Date;
 }
@@ -65,6 +75,16 @@ Player.init(
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
+    },
+    photoUrl: {
+      type: DataTypes.STRING(500),
+      allowNull: true,
+      defaultValue: null,
+    },
+    photoPublicId: {
+      type: DataTypes.STRING(300),
+      allowNull: true,
+      defaultValue: null,
     },
   },
   {

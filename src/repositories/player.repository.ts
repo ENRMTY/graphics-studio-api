@@ -1,3 +1,4 @@
+import { Op, col, fn, where } from "sequelize";
 import { Player } from "../models";
 
 export const playerRepository = {
@@ -9,7 +10,12 @@ export const playerRepository = {
 
   findOneByName: (name: string, userId?: string | null) =>
     Player.findOne({
-      where: userId ? { userId, name } : { userId: null as any, name },
+      where: {
+        [Op.and]: [
+          userId ? { userId } : { userId: null },
+          where(fn("lower", col("name")), name.trim().toLowerCase()),
+        ],
+      },
     }),
 
   create: (data: any) => Player.create(data),
