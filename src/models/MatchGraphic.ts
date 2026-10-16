@@ -8,7 +8,8 @@ export type GraphicType =
   | "stats"
   | "quote"
   | "transfer"
-  | "lineup";
+  | "lineup"
+  | "goal";
 export type GraphicStatus = "draft" | "published";
 
 export interface MatchEvent {
@@ -198,6 +199,7 @@ MatchGraphic.init(
         "quote",
         "transfer",
         "lineup",
+        "goal",
       ),
       allowNull: false,
     },
