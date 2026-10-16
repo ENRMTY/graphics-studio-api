@@ -9,6 +9,6 @@ module.exports = {
   },
 
   async down() {
-    // Postgres cannot drop a single enum value in place.
+    // postgres cannot drop a single enum value in place
   },
 };
