@@ -58,11 +58,12 @@ export const graphicsService = {
         "stats",
         "quote",
         "transfer",
+        "lineup",
       ].includes(body.graphicType)
     ) {
       throw new HttpError(
         400,
-        "graphicType must be fulltime, matchday, halftime, stats, quote, or transfer",
+        "graphicType must be fulltime, matchday, halftime, stats, quote, transfer, or lineup",
       );
     }
 
@@ -217,7 +218,7 @@ export const graphicsService = {
   },
 
   async getLatestDrafts(userId?: string) {
-    const [fulltime, halftime, matchday, stats, quote, transfer] =
+    const [fulltime, halftime, matchday, stats, quote, transfer, lineup] =
       await Promise.all([
         graphicsRepository.findLatestDraftByType("fulltime", userId),
         graphicsRepository.findLatestDraftByType("halftime", userId),
@@ -225,7 +226,8 @@ export const graphicsService = {
         graphicsRepository.findLatestDraftByType("stats", userId),
         graphicsRepository.findLatestDraftByType("quote", userId),
         graphicsRepository.findLatestDraftByType("transfer", userId),
+        graphicsRepository.findLatestDraftByType("lineup", userId),
       ]);
-    return { fulltime, halftime, matchday, stats, quote, transfer };
+    return { fulltime, halftime, matchday, stats, quote, transfer, lineup };
   },
 };

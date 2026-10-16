@@ -7,7 +7,8 @@ export type GraphicType =
   | "matchday"
   | "stats"
   | "quote"
-  | "transfer";
+  | "transfer"
+  | "lineup";
 export type GraphicStatus = "draft" | "published";
 
 export interface MatchEvent {
@@ -196,6 +197,7 @@ MatchGraphic.init(
         "stats",
         "quote",
         "transfer",
+        "lineup",
       ),
       allowNull: false,
     },
